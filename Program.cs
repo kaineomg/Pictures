@@ -5,7 +5,7 @@ using System.IO;
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-
+Random rnd= new Random();
 
 
 
@@ -39,6 +39,16 @@ app.MapGet("/download", async ( context) =>
     Console.WriteLine("Открыт");
 });
 
+
+app.MapGet("/rndimage", async (context) =>
+{
+    var files = new DirectoryInfo(@"data\").GetFiles();
+    int index = new Random().Next(0, files.Length);
+
+
+    await context.Response.SendFileAsync($@"data\{files[index].Name}");
+    Console.WriteLine("Открыт");
+});
 
 
 app.MapGet("/", () => "Hello World!");
