@@ -33,10 +33,31 @@ app.MapPost("/upload", async (HttpContext context, IConfiguration cfg) =>
 
 });
 
-app.MapGet("/download", async ( context) =>
+app.MapGet("/download", async (HttpContext context,string name) =>
+
 {
-    await context.Response.SendFileAsync(@"data\file.png");
-    Console.WriteLine("Открыт");
+    
+    bool img = false;
+    var files = new DirectoryInfo(@"data\").GetFiles();
+    foreach (var file in files)
+    {
+        if (file.Name == name)
+
+        {
+            await context.Response.SendFileAsync($@"data\{name}");
+            img = true;
+        }
+
+    }
+    if (!img)
+    {
+        await context.Response.WriteAsync("Image Not Found");  
+    }
+      
+
+
+
+    
 });
 
 
